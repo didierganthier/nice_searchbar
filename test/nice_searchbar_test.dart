@@ -22,26 +22,25 @@ void main() {
       ),
     );
 
-    // Check that the search icon is initially visible
+    // Ensure the search bar starts in its folded state
     expect(find.byIcon(Icons.search), findsOneWidget);
     expect(find.byIcon(Icons.close), findsNothing);
 
-    // Tap on the search icon to expand the app bar
-    await tester.tap(find.byIcon(Icons.search));
-    await tester.pumpAndSettle();
+    // Wait for auto-expansion from initState
+    await tester.pump(const Duration(milliseconds: 900));
 
-    // Check that the app bar expanded and the close icon is visible
+    // Search bar should be unfolded now
     expect(find.byIcon(Icons.close), findsOneWidget);
     expect(find.byIcon(Icons.search), findsNothing);
-    expect(additionalFunctionCalled, isTrue);
 
-    // Tap on the close icon to collapse the app bar
+    // Tap on the close icon to collapse the search bar
     await tester.tap(find.byIcon(Icons.close));
     await tester.pumpAndSettle();
 
-    // Check that the app bar collapsed back
+    // Verify that the search bar collapses
     expect(find.byIcon(Icons.search), findsOneWidget);
     expect(find.byIcon(Icons.close), findsNothing);
+    expect(additionalFunctionCalled, isTrue);
   });
 
   testWidgets('NiceSearchBar calls onChanged when typing', (
@@ -62,9 +61,11 @@ void main() {
       ),
     );
 
-    // Expand the search bar
-    await tester.tap(find.byIcon(Icons.search));
-    await tester.pumpAndSettle();
+    // Wait for auto-expansion from initState
+    await tester.pump(const Duration(milliseconds: 900));
+
+    // Ensure the search bar is expanded
+    expect(find.byType(TextField), findsOneWidget);
 
     // Enter text into the search field
     await tester.enterText(find.byType(TextField), 'Hello');

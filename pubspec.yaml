@@ -1,6 +1,6 @@
 name: nice_searchbar
 description: "A customizable, animated search bar for Flutter applications."
-version: 0.0.2
+version: 0.0.4
 homepage:
 
 environment:
